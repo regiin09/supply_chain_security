@@ -1,6 +1,7 @@
 name: Generate SBOM Report with Syft
 
 on:
+  workflow_dispatch:     #added
   push:
     branches:
       - master
@@ -20,12 +21,12 @@ jobs:
       run: |
         curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
 
-    - name: Generate SBOM                      #Modified
+    - name: Generate SBOM
       run: |
-        syft docker.io/kodekloud/webapp-color:latest -o spdx-json > spdx.json  
+        syft docker.io/kodekloud/webapp-color:latest -o spdx-json > spdx.json
 
     - name: Upload SBOM Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: sbom-report
-        path: sbom.xml
+        name: spdx-report
+        path: spdx.json       #modified
